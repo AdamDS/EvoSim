@@ -1,0 +1,17 @@
+#include <iostream>
+#include <ctime>
+#include <cstdlib>
+#include <cmath>
+#include <istream>
+#include <fstream>
+#include <functional>
+#include <algorithm>
+#include <sstream>
+using std::cout;
+using std::cin;
+using std::endl;
+using std::ceil;
+using std::ofstream;
+using std::string;
+using std::ostringstream;
+using std::ifstream;

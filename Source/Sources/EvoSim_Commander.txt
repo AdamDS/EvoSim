@@ -1,0 +1,65 @@
+0000000000001110111
+pcanmgzCdofktieshrv
+
+The above numbers represent save options and runtime options according to the following:
+
+	0 = save & 1 = don't save
+
+p = population (how many indivs in each generation)
+
+c = coordinate phenotype (indivs phenotype coords)
+
+a = parent(s) (indiv's parent(s)...dependent on speciation type)
+
+n = neighbor(s) (indiv's neighbor(s)...dependent on speciation type)
+
+m = mutability (indiv's mutability)
+
+g = genus (how many species in each generation)
+
+z = species size (how many in each species, centroid coords, and density)
+
+C = species centroid coodinate
+
+d = species density
+
+o = indivs in species (indiv identities)
+
+f = fitness landscape
+
+k = shifted landscape
+
+
+t = NGEN
+	0 = default - 1000 generations
+	1 = customize number of generations to run
+
+i = IPOP
+	0 = default - 300 starting population
+	1 = customize number of initial indivs
+
+e = experiment type
+	0 = single mutability
+	1 = competition
+
+s = speciation type 
+	0 = default - Nate's
+	1 = Adam's
+
+h = hereditary type
+	0 = default - assortative mating
+	1 = cloning
+r = landscape movement
+	0 = default - move every 2 generations
+	1 = customize rate
+
+v = landscape variation
+	if = 0, default - the landscape will vary between 1 and 4
+	if = 1, customize the landscape low and high fitness values
+
+
+NOTE:
+Nate's speciation is based on the two nearest neighbors (reproduction isolation + next nearest).  Mating occurs between nearest neighbor only.
+
+Adam's speciation is based soley on the nearest neighbor (reproduction isolation).  Mating occurs between nearest neighbor only.
+

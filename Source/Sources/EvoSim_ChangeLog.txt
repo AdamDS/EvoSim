@@ -1,0 +1,144 @@
+Last updated 12:07am 8*9*2011
+
+Reviving EvoSim project:  12:00am 8*9*11
+Worked on fixing setNeighbors using a double checking algorithm that I realized I needed for efficiency recently in the Matlab version. Found a few sources of bugs within the same function. The appropriate neighbors1 and 2 seem to be coming out correctly after a test run of 2 generations and IPOP = 4 on a 2 fit flatscape. Have been working with NetBeans IDE instead of Visual Studio, and had problems with endl function in conjunction with ofstream variables. Will switch to Visual Studio 2010 Professional to bypass that problem and other debugging issues with NetBeans 7.0.1. Need to reset output recording in ancestors to reflect the (hopefully) lack of issues experienced in VS. This will require how output data is separated.
+
+EvoSim.1 to EvoSim.2:  12:34pm 10*12*10
+After plotting centroid locations for a test run of Expt 9, the centroids appear in the healthy areas of the landscape, but the landscape is flipped both vertically and horizontally.  To fix this, changed the writing order of TheLandscape so that the values go from 45,45 to 0,0.  Still need to double check the output, but this should align the centroids pattern with the landscape appropriately.
+
+EvoSim.1 to EvoSim.2:  3:14pm 9*22*10
+Split the save file for phenotypes into two files, one for each coordinate phenotype location.  The new file prefixes are "phenotypesX" and "phenotypesY".
+
+EvoSim.1 to EvoSim.2:  11:19am 9*22*10
+Added bacterial cleaving style reporduction options in main.  The new command is called hrdcom.  This requires a change in reproduction function naming.  Ancestors::reproduce is for assortative mating, so this function will now be called assortativeMating.  The bacterial cloning/cleaving function will be called cleaving, and it will take the same arguments as assortativeMating.  Finally, a new indiv function is needed to account for the single parent, indiv::setBaby, an overloaded function.  This will take the same arguments as the original except mateId (parent2 is set as -1 within setBaby.
+Added an Ancestors save file which saves the kill counts for each type of indiv death for each generation.  This file is enacted if saving the population size.  This recording kill counts is primarily for diagnostic purposes like the timing file added in the previous session.  
+
+EvoSim.1 to EvoSim.2:  5:21am 9*14*10
+Added in a diagnostic writing portion within main to track the speed of key steps as well as the population and kill counts of each type for each generation.  This should help determine if further changes make the program more efficient.  This new output file is "times_EvoSim_#.txt".
+
+EvoSim.1 to EvoSim.2:  2:44am 9*9*10
+Found a bug in shifting the landscape.  Also changed the name to shiftTheLandscape(CRandomMersenne* r, int g) from shiftLandscape(int num_shifts, CrandomMersenne* r).  Moved the logicals for when to shift into this function and commented them out in main.  Will probably take out the commented main portion for this action later.  Gave landscape two new data members, int Shifted and int Rate.  Shifted will count have many times the landscape has moved, whereas Rate will keep track of the number of generations between shifting.  Split writeLandscape into two functions writeTheLandscape(int simu) and writeShiftScape(int simu).  There is still a problem with translating the ShiftedScape.
+Began setting up parts needed within main to create a save file of the options chosen for each simulation.  This stuff is currently commented out.  
+Found and fixed a problem with choosing the speciation method within main; this involved changing the command variable checked from expcom to sptcom.
+
+EvoSim.1 to EvoSim.2:  4:19am 9*7*10
+Although still need to double check, may have removed bug in writing data to files; this involved checking the save commands for the reduced data storage method employed when only select data from TheAncestors is saved (e.g. Mutabilities only saved and not Neighbor1s) within each block of writing to files within writeAncestors(int simu, int gens).  Added another checkCommand() function to ancestors which returns an integer.  Also included char* Popc to track command of saving population size.  Furthermore, have added getPopulationSize(), getMutabilities(), getParent1s(), getParent2s(), getNeighbor1s(), getNeighbor2s(), getPhenotypeXs(), getPhenotypeYs() to the ancestors class to access their respective data members.  Put in reset the ancestors and population variables with main just after finishing writing data to files to reset for the next simulation run.  Lastly, included an erase command within resetTheAncestors() to reset the PopulationSize vector data member. 
+
+EvoSim.1 to EvoSim.2:  2:07am 9*6*10
+Commented main.  Removed some commented excess from main.  Changed the check to enter the birth and death portion within main so that reproduce and death functions are done for the second to last generation.  Changed the filename base from Expt9_Cpp to EvoSim to reflect that the program can run many experiment types.  Found a bug with writing the ancestors.  Need to fix this later.  If opting to save only select data, the ancestors variable does not retain information like population size.
+
+EvoSim.1 to EvoSim.2:  10:30am 9*3*10
+Rearranged the order of killing to match closely the Matlab version (overpopulation, random, bounds) by killing off out of bounds indivs within the reproduce function, then overpopulation, and finally random death.  Added in writing support for listing indiv identities within each species.  This involved splitting the char* Sppc command data member in the ancestors into char* Spdc for species details and char* Spic for the indivs' indentity within the species.  This in turn has led to an additional command variable in the commander text file- splitting the species save variable into two distinct variables for species detail and indivs' identity within each species.
+NOTE:  The population still reached unusually large sizes an uncharacteristic number of times in the previous build.
+
+EvoSim.1 to EvoSim.2:  12:48am 9*3*10
+Found a bug in RussianRoulette that wasn't killing off the correct number of indivs.  Added in appropriate support in the landscape class to account for the new landscape commands (moving landscape rate, varying landscape height range).  This includes adding arguments to setSaveLandCommands, including char* Vlsc and Mlsc, and modifying the primary constructor to take int speed, min and max.  Modified setRowForBasicMap to account for customizable min and max fitness values.  Included options to customize NGEN and IPOP.  Fixed a bug which caused the program to fail when shifting the landscape for the last generation when NGEN is odd.  Uncommented the embedded cliff jumper check in reproduce.  Fixed a bug which prevented writing of any ancestors information.
+NOTE:  fixing the bug in RussianRoulette has led to a population count consistent with what is expected as compared to the Matlab version.
+
+EvoSim.1 to EvoSim.2:  4:28pm 9*1*10
+Rearranged the commander file to include an option for varying the height of the landscape.  Also moved the order of the last few commands.  Although commented out, began inserting a couple more landscape constructors while including an input for shifting rate.
+
+EvoSim.1 to EvoSim.2:  3:39pm 9*1*10
+Cleaned up the nearest neighbor reproduction function, reproduce.  Took out the check for babies appearing out of bounds.  Should probably leave it since it may help with efficiency.
+Noticed that NicheControl did not adjust identities after removing indiv's.  Fixed this.  
+NOTE:  Around 3:35pm the simulation ran for about 5 generations and did not have problems.  The population in play also matched with limits of carrying capacity of Matlab version.
+
+EvoSim.1 to EvoSim.2:  12:30pm 8*30*10
+Commented out NicheControl, getDefaultRange, and OverPopulated from population class.  Wrote a new NicheControl that takes no arguments and made it simpler than the previous function.  Changed the cout comments after reproduce is called in TESTexpt.cpp to clearly indicate output values for checking progress.  Updated the NicheControl function call in TESTexpt.cpp to reflect described changes.  Put the setNeighbors function just after all three waves of death and just before reseting the population and genus.  Commented out the range check variables and lines within population::setNeighbors to make it simpler for now.
+
+EvoSim.1 to EvoSim.2:  9:55am 7*13*10
+Fixed mating algorithm to correctly use the greater x and y coordinates of the reference parent and its mate.  Before, the higher values were using the same equation as for the lower values which is wrong.
+
+EvoSim.1 to EvoSim.2:  4:15pm 5*10*10
+Changed arguments for ancestors::reproduce to take population* and CRandomMersenne* instead of an int.  The landscape* argument has not been changed.
+
+EvoSim.1 to EvoSim.2:  2:14am 5*10*10
+Reorganized the write files algorithms.  Population information is now written via the ancestors class.  Landscape information is written via the landscape class.  The following functions and data members have been added:
+to ancestors-
+public:
+	void setTempPopulation(population tp);
+	void setSaveCommands(char popc, char phnc, char parc, char nghc, 
+		char mutc, char genc, char sppc);
+	char getIMeanMutabilityCommand() const;
+	char getPopulationCommand() const;
+	char getPhenotypeCommand() const;
+	char getParentCommand() const;
+	char getNeighborCommand() const;
+	char getMutabilityCommand() const;
+	char getGenusCommand() const;
+	char getSpeciesCommand() const;
+	bool checkCommand(char command) const;
+	void writeAncestors(int simu, int gens);
+private:
+	vector<double> PhenotypesX;
+	vector<double> PhenotypesY;
+	vector<int> Parent1s;
+	vector<int> Parent2s;
+	vector<double> Mutabilities;
+	char Immc, Popc, Phnc, Parc, Nghc, Mutc, Genc, Sppc;
+to landscape-
+public:
+	void setSaveLandCommands(char fitc, char slsc);
+	char getFitnessCommand() const;
+	char getShiftedCommand() const;
+	bool checkLandCommand(char command) const;
+	void writeLandscape(int simu, int gens);
+private:
+	char Fitc, Slsc;
+The constructors for ancestors has been modified to reflect the saving changes.  Also the ancestors functions addToTheAncenstors and addToTheNations have been modified to work with the new saving methods.
+Made the appropriate changes in main to reflect the new save algorithms.
+Moved the unique mutability check from the end of the generations loop to just after recording the previous population and genus to ELDERS.
+Rearranged the order of the switches in Expt9_commander.txt.  Also added some switches.  Removed initial mean mutability switch.
+
+
+EvoSim.1 to EvoSim.2:  6:10pm 5*2*2010
+Added an ancestors constructor to take an integer argument which reserves memory for the ancestors vector.
+
+
+EvoSim.1 to EvoSim.2:  11:50am 5*2*2010
+Took out the start time cout.
+Fixed the shiftTheLandscape function so that it now correctly records the old landscape onto ShiftedScape.  Double checked the data from TheLandscape and ShiftedScape after shifting the landscape several times, and the two maps can be merged perfectly and show no repeated rows.
+Moved the interp2 function in main after shiftTheLandscape to within shiftTheLandscape.  Also changed the arguments from 0,4,0,4 to 0,X,0,4 so that entire rows are interpolated rather than just between the first two basic grid points.
+
+
+EvoSim.1 to EvoSim.2:  3:02pm 4*28*2010
+Changed the maximum number of generations to 1000 from 15000.  I have yet to see any final_generation above several hundred, so this should help reduce run time.
+Changed the order the update information is (gen, time, pop to gen, pop, time), and added the start time for the first generation (0).
+Overhauled the landscape class.  Most functions are at least slightly changed and many new ones have been added.
+Changed the landscape function interp2 to include four inputs.
+Changed the constructor for the landscape so that the first two inputs determine the "basic_map" (Matlab version reference).
+Added shifting landscape with the following landscape functions and data members (+) and changed some previous landscape functions (~):
+public:
+	+landscape(int,int,int)
+	+void setBasicMap(CRandomMersenne*)
+	~void interp2(int,int,int,int)
+	+void shiftTheLandscape(int)
+	+void initializeShiftedScape(int)
+	+void setShiftTimimg(int)
+	+int getShiftTiming() const
+	+double getValueOfShiftedScape(int,int) const
+	+int getMaxXOfShiftedScape() const
+	+int getMaxYOfShiftedScape() const
+private:
+	+setRowForBasicMap(int,CRandomMersenne*)
+	+void setShiftedScape(int,int,double)
+	+int Shift
+	+int ShiftTime
+	+double* ShiftedScape
+
+
+EvoSim.1 to EvoSim.2:  5:11pm 4*27*2010
+Added a creation loop to include intiated indivs out of the landscape range.
+Tried to add NicheControl to the same creation loop, but there is an error in some instances, so need to figure out how to work it in.
+Added commander options to record the population and genus to the ancestors object, ELDERS.  (I think the program slows down when trying to keep track of lots of information...maybe.  Perhaps the time for every ten generations reaches approximately steady state, for time spent on ten generations, when the population becomes approximately level and sustainable around a couple thousand indivs.)
+Soon to add shifting landscape........
+
+
+EvoSim.0 to EvoSim.1:  6:47pm 4*26*2010
+Simulation counter at command line fixed.
+Program can read from "Expt9_commander.txt".
+Output of options read from "Expt9_commander.txt" appear at command line.
+File output was changed to comma delimited, but still with .txt naming.
+Added output line at the very end of simulations to let user know everything is "ALLL done!".
+Added output option for the fitness landscape.
+Added option for experiment type (randomly or uniformly assigned noise).
